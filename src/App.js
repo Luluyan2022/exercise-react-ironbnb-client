@@ -31,8 +31,10 @@ function App() {
     axios
       .post(process.env.REACT_APP_API_URL + "/apartments", newAppatmentObj)
       .then((res) => {
-        console.log(res.data)        
+        console.log(res.data) 
+        return getInfoFromAPI()  //!!!!!!!!      
       })
+      .then(() => console.log('Updating...'))
       .catch((e) => {
         console.log("error in creating the apartmentslist from API",e)
       })
