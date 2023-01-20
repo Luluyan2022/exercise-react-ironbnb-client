@@ -26,19 +26,7 @@ function App() {
           console.log("error in getting the apartmentslist from API",e)
         })
   }
-  //create new Appartment
-  const createNewAppartment = (newAppatmentObj) => {    
-    axios
-      .post(process.env.REACT_APP_API_URL + "/apartments", newAppatmentObj)
-      .then((res) => {
-        console.log(res.data) 
-        return getInfoFromAPI()  //!!!!!!!!      
-      })
-      .then(() => console.log('Updating...'))
-      .catch((e) => {
-        console.log("error in creating the apartmentslist from API",e)
-      })
-}
+ 
   
   return (
     <div className="App">
@@ -48,7 +36,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/apartments' element={<ApartmentsList apartmentsList={apartmentsList} />} />
         <Route path='/apartments/create'
-          element={<CreateApartment createNewAppartment={createNewAppartment} getInfoFromAPI={getInfoFromAPI}/>}
+          element={<CreateApartment getInfoFromAPI={getInfoFromAPI}/>}
         />
         <Route path='/apartments/:apartmentId' element={<ApartmentDetails apartmentsList={apartmentsList}/>} />        
       </Routes>

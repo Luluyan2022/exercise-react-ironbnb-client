@@ -1,31 +1,45 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-export default function CreateApartment(props){
+export default function CreateApartment(props) {
     const [title, setTitle] = useState("");
     const [imgURL, setImgURL] = useState("");
     const [pricePerDay, setPricePerDay] = useState("")
-   
-    const nagigate =  useNavigate();
+
+    //create new Appartment
+    const createNewAppartment = (newAppatmentObj) => {
+        axios
+            .post(process.env.REACT_APP_API_URL + "/apartments", newAppatmentObj)
+            .then(() => {              
+                props.getInfoFromAPI()  //!!!!!!!!      
+            })
+            .then(() => console.log('Updating...'))
+            .catch((e) => {
+                console.log("error in creating the apartmentslist from API", e)
+            })
+    }
+    const nagigate = useNavigate();
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const newAppatmentObj = {
-            "title" : title,
-            "img" : imgURL,
-            "pricePerDay" : pricePerDay
+            "title": title,
+            "img": imgURL,
+            "pricePerDay": pricePerDay
         }
         console.log(newAppatmentObj)
-        props.createNewAppartment(newAppatmentObj);
-        props.getInfoFromAPI();
+        createNewAppartment(newAppatmentObj);
+        // props.getInfoFromAPI();  if put it here, we can not get the new Info, because create and get Info could be excuted at the same time
         setTitle("")
         setImgURL("")
         setPricePerDay("")
         nagigate("/apartments")
-    }   
-     
-    
-    return(
+    }
+
+
+    return (
         <div>
             <form onSubmit={handleSubmit}>
                 <label>Title
@@ -41,7 +55,7 @@ export default function CreateApartment(props){
                 <label>Img
                     <input
                         name="img"
-                        type="string"                        
+                        type="string"
                         required={false}
                         placeholder="please upload pictures"
                         value={imgURL}
